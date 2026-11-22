@@ -1,0 +1,4 @@
+ID;name;category;rating;isApproved;contactEmail
+10000000-0000-0000-0000-000000000001;TechNova Cloud Systems;IT Infrastructure;4.8;true;sales@technova.com
+10000000-0000-0000-0000-000000000002;Apex Office Supplies;Office Equipment;4.2;true;orders@apexoffice.com
+10000000-0000-0000-0000-000000000003;Unverified Global Logistics;Logistics;2.5;false;info@unverifiedlog.com

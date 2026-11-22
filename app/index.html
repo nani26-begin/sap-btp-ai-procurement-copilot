@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAP BTP AI Procurement Copilot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #161d24;
+      color: #e6edf3;
+      display: flex;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+    .container {
+      width: 100%;
+      max-width: 650px;
+    }
+    h1 {
+      font-weight: 400;
+      font-size: 2rem;
+      margin: 0 0 6px 0;
+    }
+    .subtitle {
+      color: #8b949e;
+      font-style: italic;
+      margin-bottom: 32px;
+    }
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 14px;
+    }
+    .card {
+      background-color: #1f2933;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .card-header {
+      background-color: #18222c;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      border-bottom: 1px solid #30363d;
+    }
+    .badge-odata {
+      background-color: #303d4d;
+      color: #c9d1d9;
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 18px;
+      border-bottom: 1px solid #26313d;
+    }
+    .row:last-child {
+      border-bottom: none;
+    }
+    .left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pill {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+      min-width: 42px;
+      text-align: center;
+    }
+    .pill-meta { background: #1f4e5f; color: #79c0ff; }
+    .pill-entity { background: #1e4620; color: #7ee787; }
+    a {
+      color: #e6edf3;
+      text-decoration: none;
+    }
+    a:hover {
+      color: #58a6ff;
+      text-decoration: underline;
+    }
+    .preview-link {
+      color: #8b949e;
+      font-size: 0.85rem;
+      font-style: italic;
+    }
+    .footer {
+      margin-top: 28px;
+      color: #8b949e;
+      font-size: 0.95rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .creator {
+      color: #58a6ff;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to @sap/cds Server</h1>
+    <div class="subtitle">Serving sap-btp-ai-procurement-copilot</div>
+
+    <div class="section-title">Services:</div>
+    <div class="card">
+      <div class="card-header">
+        <span>▾ Procurement Service</span>
+        <span class="badge-odata">odata</span>
+      </div>
+      <div class="row">
+        <div class="left">
+          <span class="pill pill-meta">meta</span>
+          <a href="/api/procurement/$metadata">/$metadata</a>
+        </div>
+        <span class="preview-link">OData V4</span>
+      </div>
+      <div class="row">
+        <div class="left">
+          <span class="pill pill-entity">entity</span>
+          <a href="/api/procurement/Vendors">Vendors</a>
+        </div>
+        <a class="preview-link" href="/api/procurement/Vendors">JSON Data</a>
+      </div>
+      <div class="row">
+        <div class="left">
+          <span class="pill pill-entity">entity</span>
+          <a href="/api/procurement/PurchaseOrders">PurchaseOrders</a>
+        </div>
+        <a class="preview-link" href="/api/procurement/PurchaseOrders">JSON Data</a>
+      </div>
+      <div class="row">
+        <div class="left">
+          <span class="pill pill-entity">entity</span>
+          <a href="/api/procurement/ApprovalLogs">ApprovalLogs</a>
+        </div>
+        <a class="preview-link" href="/api/procurement/ApprovalLogs">JSON Data</a>
+      </div>
+      <div class="row">
+        <div class="left">
+          <span class="pill pill-entity">entity</span>
+          <a href="/api/procurement/Currencies">Currencies</a>
+        </div>
+        <a class="preview-link" href="/api/procurement/Currencies">JSON Data</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Enterprise AI Procurement & Policy Copilot</span>
+      <span>Created by <span class="creator">Ajit babu kakumanu</span></span>
+    </div>
+  </div>
+</body>
+</html>

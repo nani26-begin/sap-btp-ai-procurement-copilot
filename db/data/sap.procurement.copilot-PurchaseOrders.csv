@@ -1,0 +1,4 @@
+ID;poNumber;title;description;vendor_ID;department;amount;currency_code;status;aiComplianceCheck;requestedBy
+20000000-0000-0000-0000-000000000001;PO-2026-10001;AWS Cloud GPU Instances;Annual renewal for AI training servers;10000000-0000-0000-0000-000000000001;Engineering;12500.00;USD;Pending;NotChecked;ajit.k@company.com
+20000000-0000-0000-0000-000000000002;PO-2026-10002;Ergonomic Chairs Bulk Order;20 chairs for new Hyderabad office;10000000-0000-0000-0000-000000000002;Operations;3200.00;USD;Approved;Compliant;priya.m@company.com
+20000000-0000-0000-0000-000000000003;PO-2026-10003;Urgent Freight Shipment;Unapproved vendor express shipping;10000000-0000-0000-0000-000000000003;SupplyChain;8500.00;USD;NeedsReview;Flagged;rahul.s@company.com
