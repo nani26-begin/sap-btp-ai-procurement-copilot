@@ -1,0 +1,11 @@
+applications:
+  - name: sap-ai-procurement-copilot
+    memory: 512M
+    disk_quota: 1G
+    buildpacks:
+      - nodejs_buildpack
+    command: npm start
+    random-route: true
+    env:
+      NODE_ENV: production
+      AI_SERVICE_URL: https://ai-procurement-engine-kind-lion-hi.cfapps.ap21.hana.ondemand.com

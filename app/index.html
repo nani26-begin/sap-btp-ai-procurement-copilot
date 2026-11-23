@@ -3,162 +3,368 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SAP BTP AI Procurement Copilot</title>
+  <title>SAP BTP AI Procurement & Market Copilot</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #161d24;
-      color: #e6edf3;
-      display: flex;
-      justify-content: center;
-      padding: 60px 20px;
+      background-color: #0f172a;
+      color: #e2e8f0;
+      padding: 24px 20px;
     }
-    .container {
-      width: 100%;
-      max-width: 650px;
-    }
-    h1 {
-      font-weight: 400;
-      font-size: 2rem;
-      margin: 0 0 6px 0;
-    }
-    .subtitle {
-      color: #8b949e;
-      font-style: italic;
-      margin-bottom: 32px;
-    }
-    .section-title {
-      font-size: 1.25rem;
-      font-weight: 400;
-      margin-bottom: 14px;
-    }
-    .card {
-      background-color: #1f2933;
-      border: 1px solid #30363d;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .card-header {
-      background-color: #18222c;
-      padding: 14px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 600;
-      border-bottom: 1px solid #30363d;
-    }
-    .badge-odata {
-      background-color: #303d4d;
-      color: #c9d1d9;
-      font-size: 0.75rem;
-      padding: 3px 10px;
-      border-radius: 12px;
-    }
-    .row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 18px;
-      border-bottom: 1px solid #26313d;
-    }
-    .row:last-child {
-      border-bottom: none;
-    }
-    .left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .pill {
-      font-size: 0.7rem;
-      padding: 2px 8px;
+    .container { max-width: 1120px; margin: 0 auto; }
+    .ticker-bar {
+      background: #1e293b;
+      border: 1px solid #334155;
       border-radius: 10px;
-      font-weight: 600;
-      min-width: 42px;
-      text-align: center;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    .pill-meta { background: #1f4e5f; color: #79c0ff; }
-    .pill-entity { background: #1e4620; color: #7ee787; }
-    a {
-      color: #e6edf3;
-      text-decoration: none;
+    .ticker-items {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 0.84rem;
     }
-    a:hover {
-      color: #58a6ff;
-      text-decoration: underline;
+    .ticker-chip {
+      background: #0f172a;
+      border: 1px solid #334155;
+      padding: 5px 10px;
+      border-radius: 8px;
     }
-    .preview-link {
-      color: #8b949e;
-      font-size: 0.85rem;
-      font-style: italic;
+    .ticker-chip strong { color: #38bdf8; }
+    .ticker-meta { font-size: 0.78rem; color: #94a3b8; display: flex; align-items: center; gap: 8px; }
+    .live-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #22c55e;
     }
-    .footer {
-      margin-top: 28px;
-      color: #8b949e;
-      font-size: 0.95rem;
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 22px;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 16px;
     }
-    .creator {
-      color: #58a6ff;
+    h1 { margin: 0; font-size: 1.65rem; color: #f8fafc; }
+    .subtitle { color: #94a3b8; font-size: 0.9rem; margin-top: 4px; }
+    .badge-sap {
+      background: #1d4ed8;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
       font-weight: 600;
     }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .stat-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .stat-label { color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; }
+    .stat-value { font-size: 1.6rem; font-weight: 700; margin-top: 6px; color: #f8fafc; }
+    .panel {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 22px;
+      overflow-x: auto;
+    }
+    .panel h2 { margin: 0 0 14px 0; font-size: 1.12rem; color: #f8fafc; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid #334155;
+      vertical-align: top;
+    }
+    th { color: #94a3b8; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; }
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .Pending, .NotChecked { background: #334155; color: #cbd5e1; }
+    .Approved, .Compliant { background: #14532d; color: #86efac; }
+    .Rejected, .Flagged { background: #7f1d1d; color: #fca5a5; }
+    .NeedsReview { background: #78350f; color: #fcd34d; }
+    .notes { font-size: 0.78rem; color: #94a3b8; margin-top: 4px; max-width: 280px; }
+    .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    button {
+      border: none;
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { opacity: 0.88; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-ai { background: #2563eb; color: #fff; }
+    .btn-market { background: #7c3aed; color: #fff; }
+    .btn-approve { background: #16a34a; color: #fff; }
+    .btn-reject { background: #dc2626; color: #fff; }
+    .chat-box { display: flex; gap: 10px; }
+    input[type="text"] {
+      flex: 1;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #f8fafc;
+      font-size: 0.92rem;
+    }
+    .chat-response {
+      margin-top: 14px;
+      background: #0f172a;
+      border-left: 3px solid #3b82f6;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      display: none;
+    }
+    footer {
+      margin-top: 24px;
+      padding-top: 14px;
+      border-top: 1px solid #1e293b;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      color: #94a3b8;
+      font-size: 0.88rem;
+    }
+    .creator { color: #38bdf8; font-weight: 600; }
+    a { color: #60a5fa; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Welcome to @sap/cds Server</h1>
-    <div class="subtitle">Serving sap-btp-ai-procurement-copilot</div>
-
-    <div class="section-title">Services:</div>
-    <div class="card">
-      <div class="card-header">
-        <span>▾ Procurement Service</span>
-        <span class="badge-odata">odata</span>
+    <!-- Live Real-Time Trending Ticker -->
+    <div class="ticker-bar">
+      <div class="ticker-items" id="ticker-items">
+        <span><span class="live-dot"></span> Loading live global market & tech trends...</span>
       </div>
-      <div class="row">
-        <div class="left">
-          <span class="pill pill-meta">meta</span>
-          <a href="/api/procurement/$metadata">/$metadata</a>
-        </div>
-        <span class="preview-link">OData V4</span>
-      </div>
-      <div class="row">
-        <div class="left">
-          <span class="pill pill-entity">entity</span>
-          <a href="/api/procurement/Vendors">Vendors</a>
-        </div>
-        <a class="preview-link" href="/api/procurement/Vendors">JSON Data</a>
-      </div>
-      <div class="row">
-        <div class="left">
-          <span class="pill pill-entity">entity</span>
-          <a href="/api/procurement/PurchaseOrders">PurchaseOrders</a>
-        </div>
-        <a class="preview-link" href="/api/procurement/PurchaseOrders">JSON Data</a>
-      </div>
-      <div class="row">
-        <div class="left">
-          <span class="pill pill-entity">entity</span>
-          <a href="/api/procurement/ApprovalLogs">ApprovalLogs</a>
-        </div>
-        <a class="preview-link" href="/api/procurement/ApprovalLogs">JSON Data</a>
-      </div>
-      <div class="row">
-        <div class="left">
-          <span class="pill pill-entity">entity</span>
-          <a href="/api/procurement/Currencies">Currencies</a>
-        </div>
-        <a class="preview-link" href="/api/procurement/Currencies">JSON Data</a>
+      <div class="ticker-meta">
+        <span id="live-clock"></span>
+        <span>• Refresh in <strong id="countdown">60</strong>s</span>
+        <button class="btn-market" onclick="loadTrending()">Refresh</button>
       </div>
     </div>
 
-    <div class="footer">
-      <span>Enterprise AI Procurement & Policy Copilot</span>
-      <span>Created by <span class="creator">Ajit babu kakumanu</span></span>
+    <header>
+      <div>
+        <h1>SAP BTP AI Procurement & Market Intelligence Copilot</h1>
+        <div class="subtitle">SAP CAP (OData V4) + Python FastAPI + Gemini 2.5 Live Google Search</div>
+      </div>
+      <span class="badge-sap">Live Internet AI • Connected</span>
+    </header>
+
+    <div class="stats">
+      <div class="stat-card"><div class="stat-label">Total Purchase Orders</div><div class="stat-value" id="stat-total">-</div></div>
+      <div class="stat-card"><div class="stat-label">Approved</div><div class="stat-value" id="stat-approved">-</div></div>
+      <div class="stat-card"><div class="stat-label">Pending / Review</div><div class="stat-value" id="stat-pending">-</div></div>
+      <div class="stat-card"><div class="stat-label">AI Flagged / Needs Review</div><div class="stat-value" id="stat-flagged">-</div></div>
     </div>
+
+    <!-- Real-Time Market & Tech Intelligence Panel -->
+    <div class="panel">
+      <h2>Live Market & Technology Intelligence (Present Rate • 1-Week Avg • Future Prediction)</h2>
+      <div class="chat-box">
+        <input id="market-topic" type="text" placeholder="Try: 24K Gold rate in India, NVIDIA H100 cloud pricing, or Trending AI services..." />
+        <button class="btn-market" onclick="askMarketIntel()">Live Analyze</button>
+      </div>
+      <div id="market-response" class="chat-response" style="border-left-color: #8b5cf6;"></div>
+    </div>
+
+    <!-- Purchase Orders Panel -->
+    <div class="panel">
+      <h2>Purchase Orders & Automated AI Compliance</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>PO Number</th>
+            <th>Order Details</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>AI Compliance</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="po-table-body">
+          <tr><td colspan="6">Loading Purchase Orders...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Hybrid Procurement & Policy Copilot -->
+    <div class="panel">
+      <h2>Ask Procurement & Policy Copilot (Live SAP DB + RAG)</h2>
+      <div class="chat-box">
+        <input id="policy-question" type="text" placeholder="Ask: which is new order, show flagged orders, total budget, or approval rules..." />
+        <button class="btn-ai" onclick="askPolicy()">Ask AI</button>
+      </div>
+      <div id="chat-response" class="chat-response"></div>
+    </div>
+
+    <footer>
+      <div>
+        OData APIs:
+        <a href="/api/procurement/PurchaseOrders" target="_blank">PurchaseOrders</a> •
+        <a href="/api/procurement/Vendors" target="_blank">Vendors</a> •
+        <a href="/api/procurement/ApprovalLogs" target="_blank">ApprovalLogs</a>
+      </div>
+      <div>Created by <span class="creator">Ajit babu kakumanu</span></div>
+    </footer>
   </div>
+
+  <script>
+    const API_BASE = '/api/procurement';
+    let secondsLeft = 60;
+
+    // Live 1-second clock & auto-refresh countdown
+    setInterval(() => {
+      document.getElementById('live-clock').textContent = new Date().toLocaleTimeString();
+      secondsLeft--;
+      if (secondsLeft <= 0) {
+        secondsLeft = 60;
+        loadTrending();
+      }
+      document.getElementById('countdown').textContent = secondsLeft;
+    }, 1000);
+
+    async function loadTrending() {
+      secondsLeft = 60;
+      try {
+        const res = await fetch(`${API_BASE}/getTrendingMarket`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        });
+        const data = await res.json();
+        const parsed = JSON.parse(data.value);
+        const container = document.getElementById('ticker-items');
+        container.innerHTML = (parsed.items || []).map(item =>
+          `<div class="ticker-chip"><span class="live-dot"></span> <strong>${item.name}:</strong> ${item.price} <span style="color:#94a3b8">(${item.trend})</span></div>`
+        ).join('');
+      } catch (err) {
+        document.getElementById('ticker-items').innerHTML = '<span>Live ticker unavailable. Check FastAPI & .env key.</span>';
+      }
+    }
+
+    async function askMarketIntel() {
+      const topic = document.getElementById('market-topic').value.trim();
+      const box = document.getElementById('market-response');
+      if (!topic) return;
+      box.style.display = 'block';
+      box.textContent = 'Searching live internet via Gemini 2.5 + Google Search...';
+      try {
+        const res = await fetch(`${API_BASE}/getMarketIntel`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic })
+        });
+        const data = await res.json();
+        box.textContent = data.value || 'No analysis returned.';
+      } catch (err) {
+        box.textContent = 'Error connecting to Gemini Live Market Intelligence.';
+      }
+    }
+
+    async function loadOrders() {
+      const res = await fetch(`${API_BASE}/PurchaseOrders`);
+      const data = await res.json();
+      const orders = data.value || [];
+
+      document.getElementById('stat-total').textContent = orders.length;
+      document.getElementById('stat-approved').textContent = orders.filter(o => o.status === 'Approved').length;
+      document.getElementById('stat-pending').textContent = orders.filter(o => o.status === 'Pending' || o.status === 'NeedsReview').length;
+      document.getElementById('stat-flagged').textContent = orders.filter(o => o.aiComplianceCheck === 'Flagged' || o.aiComplianceCheck === 'NeedsReview').length;
+
+      document.getElementById('po-table-body').innerHTML = orders.map(po => `
+        <tr>
+          <td><strong>${po.poNumber}</strong><div class="notes">${po.department || ''}</div></td>
+          <td><strong>${po.title}</strong><div class="notes">${po.description || ''}</div></td>
+          <td>$${Number(po.amount).toLocaleString()} ${po.currency_code || 'USD'}</td>
+          <td><span class="pill ${po.status}">${po.status}</span></td>
+          <td>
+            <span class="pill ${po.aiComplianceCheck || 'NotChecked'}">${po.aiComplianceCheck || 'NotChecked'}</span>
+            ${po.aiPolicyNotes ? `<div class="notes">${po.aiPolicyNotes}</div>` : ''}
+          </td>
+          <td>
+            <div class="actions">
+              <button class="btn-ai" onclick="runAction('${po.ID}', 'runAIComplianceCheck', this)">AI Check</button>
+              <button class="btn-approve" onclick="runAction('${po.ID}', 'approveOrder', this)">Approve</button>
+              <button class="btn-reject" onclick="runAction('${po.ID}', 'rejectOrder', this)">Reject</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function runAction(id, action, btn) {
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = '...';
+      try {
+        const body = action === 'runAIComplianceCheck' ? {} : { comments: `${action} via Dashboard` };
+        await fetch(`${API_BASE}/PurchaseOrders(${id})/ProcurementService.${action}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        await loadOrders();
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    }
+
+    async function askPolicy() {
+      const question = document.getElementById('policy-question').value.trim();
+      const box = document.getElementById('chat-response');
+      if (!question) return;
+      box.style.display = 'block';
+      box.textContent = 'Analyzing live SAP database & policies...';
+      try {
+        const res = await fetch(`${API_BASE}/askPolicyCopilot`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question })
+        });
+        const data = await res.json();
+        box.textContent = data.value || 'No response received.';
+      } catch (err) {
+        box.textContent = 'Error connecting to Copilot.';
+      }
+    }
+
+    loadOrders();
+    loadTrending();
+  </script>
 </body>
 </html>

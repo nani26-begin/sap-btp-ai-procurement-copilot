@@ -12,4 +12,6 @@ service ProcurementService @(path: '/api/procurement') {
     entity ApprovalLogs as projection on db.ApprovalLogs;
 
     action askPolicyCopilot(question : String) returns String;
+    action getTrendingMarket() returns String;
+    action getMarketIntel(topic : String) returns String;
 }

@@ -92,13 +92,16 @@ export default cds.service.impl(async function () {
         return SELECT.one.from(PurchaseOrders).where({ ID });
     });
 
-    // AI Action: Ask Company Procurement Policy Question
+    // AI Action: Hybrid Live-DB + Policy Copilot
     this.on('askPolicyCopilot', async (req) => {
         const { question } = req.data;
+        const orders = await SELECT.from(PurchaseOrders);
+        const vendors = await SELECT.from(Vendors);
+
         const response = await fetch(`${AI_SERVICE_URL}/api/ai/ask-policy`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question })
+            body: JSON.stringify({ question, orders, vendors })
         });
 
         if (!response.ok) {
@@ -107,5 +110,26 @@ export default cds.service.impl(async function () {
 
         const data = await response.json();
         return data.answer;
+    });
+
+    // Real-Time Trending Market Feed (via Gemini + Google Search)
+    this.on('getTrendingMarket', async (req) => {
+        const response = await fetch(`${AI_SERVICE_URL}/api/ai/trending-market`);
+        if (!response.ok) return req.error(502, 'AI Market Service unavailable.');
+        const data = await response.json();
+        return JSON.stringify(data);
+    });
+
+    // Live Market & Tech Intelligence (Present + 1-Week Avg + Prediction)
+    this.on('getMarketIntel', async (req) => {
+        const { topic } = req.data;
+        const response = await fetch(`${AI_SERVICE_URL}/api/ai/market-intel`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ topic })
+        });
+        if (!response.ok) return req.error(502, 'AI Market Service unavailable.');
+        const data = await response.json();
+        return data.analysis;
     });
 });

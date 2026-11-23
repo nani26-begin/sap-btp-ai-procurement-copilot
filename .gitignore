@@ -20,3 +20,4 @@ mta_archives/
 @cds-models
 ai-service/venv/
 __pycache__/
+ai-service/.env
