@@ -1,7 +1,9 @@
 import cds from '@sap/cds';
 
+const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://127.0.0.1:8000';
+
 export default cds.service.impl(async function () {
-    const { PurchaseOrders, ApprovalLogs } = this.entities;
+    const { PurchaseOrders, Vendors, ApprovalLogs } = this.entities;
 
     // Auto-generate PO Number and default status before creating a PO
     this.before('CREATE', PurchaseOrders, async (req) => {
@@ -46,5 +48,64 @@ export default cds.service.impl(async function () {
         });
 
         return SELECT.one.from(PurchaseOrders).where({ ID });
+    });
+
+    // AI Action: Run RAG Policy Compliance Check via Python FastAPI
+    this.on('runAIComplianceCheck', PurchaseOrders, async (req) => {
+        const { ID } = req.params[0];
+        const po = await SELECT.one.from(PurchaseOrders).where({ ID });
+        if (!po) return req.error(404, `PurchaseOrder ${ID} not found`);
+
+        const vendor = po.vendor_ID
+            ? await SELECT.one.from(Vendors).where({ ID: po.vendor_ID })
+            : null;
+
+        const response = await fetch(`${AI_SERVICE_URL}/api/ai/check-compliance`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                poNumber: po.poNumber,
+                title: po.title,
+                description: po.description || '',
+                department: po.department || 'General',
+                amount: Number(po.amount),
+                vendorName: vendor?.name || 'Unknown',
+                vendorApproved: vendor?.isApproved ?? false,
+                vendorRating: Number(vendor?.rating || 0)
+            })
+        });
+
+        if (!response.ok) {
+            return req.error(502, 'AI Policy Service is unavailable. Ensure FastAPI is running on port 8000.');
+        }
+
+        const aiResult = await response.json();
+        const notes = `${aiResult.recommendation} | Flags: ${aiResult.flags.join(' ; ')}`;
+
+        await UPDATE(PurchaseOrders)
+            .set({
+                aiComplianceCheck: aiResult.aiComplianceCheck,
+                aiPolicyNotes: notes.slice(0, 1000)
+            })
+            .where({ ID });
+
+        return SELECT.one.from(PurchaseOrders).where({ ID });
+    });
+
+    // AI Action: Ask Company Procurement Policy Question
+    this.on('askPolicyCopilot', async (req) => {
+        const { question } = req.data;
+        const response = await fetch(`${AI_SERVICE_URL}/api/ai/ask-policy`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+        });
+
+        if (!response.ok) {
+            return req.error(502, 'AI Policy Service is unavailable.');
+        }
+
+        const data = await response.json();
+        return data.answer;
     });
 });

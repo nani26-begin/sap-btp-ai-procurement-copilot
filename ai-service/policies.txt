@@ -1,0 +1,14 @@
+POLICY-01: Vendor Approval Requirement
+All purchase orders must be placed exclusively with approved vendors (isApproved = true). Any purchase order linked to an unapproved vendor must be immediately flagged as Non-Compliant and routed for manual Compliance Officer review.
+
+POLICY-02: Budget Approval Thresholds
+Purchase orders under $5,000 USD can be auto-approved by Department Managers. Purchase orders between $5,000 USD and $10,000 USD require Senior Director approval. Purchase orders exceeding $10,000 USD require VP Finance sign-off and competitive vendor quotes.
+
+POLICY-03: IT Infrastructure & Cloud Spending
+All IT Infrastructure, Cloud GPU, and Software renewal orders above $10,000 USD must include an Architecture Review Board (ARB) justification and verify that the vendor rating is at least 4.0 out of 5.0.
+
+POLICY-04: Urgent & Express Logistics
+Urgent or express freight shipments exceeding $5,000 USD require Supply Chain Head approval. Express shipping with vendors rated below 3.0 is strictly prohibited under company risk policy.
+
+POLICY-05: Office Equipment & Bulk Orders
+Bulk office equipment purchases (such as chairs, desks, or monitors) under $5,000 USD from approved vendors with a rating above 4.0 are pre-compliant and eligible for fast-track approval.

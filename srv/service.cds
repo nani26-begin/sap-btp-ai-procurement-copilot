@@ -6,7 +6,10 @@ service ProcurementService @(path: '/api/procurement') {
     entity PurchaseOrders as projection on db.PurchaseOrders actions {
         action approveOrder(comments : String) returns PurchaseOrders;
         action rejectOrder(comments : String) returns PurchaseOrders;
+        action runAIComplianceCheck() returns PurchaseOrders;
     };
 
     entity ApprovalLogs as projection on db.ApprovalLogs;
+
+    action askPolicyCopilot(question : String) returns String;
 }
